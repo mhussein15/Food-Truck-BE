@@ -13,7 +13,8 @@ const db = require("./db/models");
 const morgan = require("morgan");
 
 //IMPORT ROUTES
-
+const userRoutes = require("./routes/user");
+const foodTruckRoutes = require("./routes/foodtruck");
 
 //MIDDLEWARE
 app.use(morgan("dev"));
@@ -24,6 +25,8 @@ app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 //ROUTES
+app.use(userRoutes);
+app.use("/foodtruck",foodTruckRoutes);
 
 //MEDIA ROUTE
 app.use("/media", express.static(path.join(__dirname, "media")));

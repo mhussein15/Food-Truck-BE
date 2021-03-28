@@ -18,7 +18,9 @@ exports.localStrategy = new LocalStrategy(async (username, password, done) => {
     if (passwordsMatch) {
       return done(null, user);
     }
-    return done(null, false);
+    const error = new Error("Username/Password may be Incorrect");
+    error.status = 401;
+    throw error;
   } catch (error) {
     done(error);
   }

@@ -1,4 +1,5 @@
 module.exports = {
-    JWT_SECRET: "asupersecretkey",
-    JWT_EXPIRATION_MS: 9000000,
-  };
+  JWT_SECRET:
+    "778ed0252c7d1b6204f3986268fc86af1291e23d12cb3d7a146dd1ee2261d390bde4cf5adc495f573b3ec983264cf59dc3f38fb8834d5539a68a9f7dea68e1a0",
+  JWT_EXPIRATION_MS: 9000000,
+};
