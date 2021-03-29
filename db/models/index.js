@@ -41,7 +41,21 @@ Object.keys(db).forEach((modelName) => {
 });
 
 //Model Realtionship
-db.User.hasOne(db.FoodTruck,{ foreignKey: "UserID" });
+
+//Food Truck User ---- Food Truck
+db.User.hasOne(db.FoodTruck, { foreignKey: "UserID" });
+
+//User ---- Food Truck
+db.User.belongsToMany(db.FoodTruck, {
+  through: "FoodTruckCustomer",
+  foreignKey: "UserID",
+  as: "FoodTrucks",
+});
+db.FoodTruck.belongsToMany(db.User, {
+  through: "FoodTruckCustomer",
+  foreignKey: "FoodTruckID",
+  as: "Customers",
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
