@@ -6,7 +6,6 @@ const passport = require("passport");
 //IMPORT CONTROLLERS
 const {
   getFoodTruckList,
-  fetchTruck,
   getFoodTruck,
   editFoodTruck,
 } = require("../controllers/foodTruckController");

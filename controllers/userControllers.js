@@ -1,4 +1,4 @@
-const { User } = require("../db/models");
+const { User, FoodTruck } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
@@ -8,7 +8,7 @@ exports.signup = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     req.body.password = hashedPassword;
-    const user = await User.create({ ...req.body, location: point });
+    const user = await User.create(req.body);
     const payload = {
       username: user.username,
       exp: Date.now() + JWT_EXPIRATION_MS,
@@ -45,4 +45,37 @@ exports.getLocation = async (req, res, next) => {
   }
 };
 
+//USER FOLLOW TRUCK
+exports.follow = async (req, res, next) => {
+  try {
+    await req.user.addFoodTruck(req.body.foodTruckID);
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
 //USER PROFILE
+exports.profile = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        username: req.user.username,
+      },
+      attributes: {
+        exclude: ["id", "password", "createdAt", "updatedAt", "role"],
+      },
+      include: {
+        model: FoodTruck,
+        as: "FoodTrucks",
+        through: {
+          attributes: [],
+        },
+        attributes: ["id", "name"],
+      },
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};

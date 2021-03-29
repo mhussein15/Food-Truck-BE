@@ -8,6 +8,8 @@ const {
   signin,
   signup,
   getLocation,
+  follow,
+  profile,
 } = require("../controllers/userControllers");
 const { isUser } = require("../middleware/auth/isAuth");
 
@@ -39,6 +41,22 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   isUser,
   getLocation
+);
+
+//FOLLOW FOODTRUCK
+router.post(
+  "/follow",
+  passport.authenticate("jwt", { session: false }),
+  isUser,
+  follow
+);
+
+//CUSTOMER PROFILE
+router.get(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  isUser,
+  profile
 );
 
 module.exports = router;
