@@ -10,6 +10,7 @@ const {
   getLocation,
   follow,
   profile,
+  profileEdit,
 } = require("../controllers/userControllers");
 const { isUser } = require("../middleware/auth/isAuth");
 
@@ -57,6 +58,13 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   isUser,
   profile
+);
+
+router.put(
+  "/profile/edit",
+  passport.authenticate("jwt", { session: false }),
+  isUser,
+  profileEdit
 );
 
 module.exports = router;
