@@ -14,7 +14,6 @@ exports.getFoodTruckList = async (req, res, next) => {
   }
 };
 
-
 exports.getFoodTruck = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID, {
@@ -40,7 +39,7 @@ exports.editFoodTruck = async (req, res, next) => {
     const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
     if (foodTruck) {
       if (foodTruck.UserID === req.user.id) {
-        await req.foodTruck.update(req.body);
+        await foodTruck.update(req.body);
         res.sendStatus(204);
       } else {
         next({
