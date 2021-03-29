@@ -2,44 +2,39 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+
+//IMPORT CONTROLLERS
 const {
   getFoodTruckList,
   fetchTruck,
   getFoodTruck,
+  editFoodTruck,
 } = require("../controllers/foodTruckController");
-const { isFoodTruckUser } = require("../middleware/auth/isAuth");
-
-//IMPORT CONTROLLERS
 
 //IMPORT VALIDATION RULES
+const {
+  foodTruckValidationRules,
+} = require("../middleware/validator/foodTruckValidator");
+const { validate } = require("../middleware/validator/validate");
+const { isFoodTruckUser } = require("../middleware/auth/isAuth");
 
-//FETCH FOOD TRUCK BY ID
-router.param("foodTruckID", async (req, res, next, foodTruckId) => {
-  const foundTruck = await fetchTruck(foodTruckId, next);
-  if (foundTruck) {
-    req.foodTruck = foundTruck;
-    next();
-  } else {
-    next({
-      status: 404,
-      message: "Food Truck Not Found",
-    });
-  }
-});
+/*-------Public Routes-------*/
 
 //GET FOOD TRUCK LIST
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  isFoodTruckUser,
-  getFoodTruckList
-);
+router.get("/", getFoodTruckList);
 
-//GET FOOD TRUCK BY ID
-router.get(
+//GET FOOD TRUCK DETAIL
+router.get("/:foodTruckID", getFoodTruck);
+
+/*-------Private Routes-------*/
+
+//EDIT FOOD TRUCK
+router.put(
   "/:foodTruckID",
+  foodTruckValidationRules(),
+  validate,
   passport.authenticate("jwt", { session: false }),
   isFoodTruckUser,
-  getFoodTruck
+  editFoodTruck
 );
 module.exports = router;

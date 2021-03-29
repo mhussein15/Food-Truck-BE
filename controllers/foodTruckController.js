@@ -4,9 +4,6 @@ const { FoodTruck } = require("../db/models");
 exports.getFoodTruckList = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findAll({
-      where: {
-        UserID: req.user.id,
-      },
       attributes: {
         exclude: ["createdAt", "updatedAt", "UserID"],
       },
@@ -17,13 +14,47 @@ exports.getFoodTruckList = async (req, res, next) => {
   }
 };
 
-exports.fetchTruck = async (foodTruckId, next) => {
+
+exports.getFoodTruck = async (req, res, next) => {
   try {
-    const foodTruck = await FoodTruck.findByPk(foodTruckId);
-    return foodTruck;
+    const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID, {
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "UserID"],
+      },
+    });
+    if (foodTruck) {
+      res.status(200).json(foodTruck);
+    } else {
+      next({
+        status: 404,
+        message: "Food Truck Not Found",
+      });
+    }
   } catch (error) {
     next(error);
   }
 };
 
-exports.getFoodTruck = (req, res) => res.status(200).json(req.foodTruck);
+exports.editFoodTruck = async (req, res, next) => {
+  try {
+    const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
+    if (foodTruck) {
+      if (foodTruck.UserID === req.user.id) {
+        await req.foodTruck.update(req.body);
+        res.sendStatus(204);
+      } else {
+        next({
+          status: 403,
+          message: "Forbidden",
+        });
+      }
+    } else {
+      next({
+        status: 404,
+        message: "Food Truck Not Found",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
