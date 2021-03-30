@@ -1,6 +1,6 @@
-const { FoodTruck } = require("../db/models");
+const { FoodTruck, Category } = require("../db/models");
 
-//Get Food Truck List
+//GET FOOD TRUCK LIST
 exports.getFoodTruckList = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findAll({
@@ -14,7 +14,8 @@ exports.getFoodTruckList = async (req, res, next) => {
   }
 };
 
-exports.getFoodTruck = async (req, res, next) => {
+//GET FOOD TRUCK DETAIL
+exports.getFoodTruckDetail = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID, {
       attributes: {
@@ -34,6 +35,7 @@ exports.getFoodTruck = async (req, res, next) => {
   }
 };
 
+//EDIT FOOD TRUCK
 exports.editFoodTruck = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
@@ -51,6 +53,32 @@ exports.editFoodTruck = async (req, res, next) => {
       next({
         status: 404,
         message: "Food Truck Not Found",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+//GET FOOD TRUCKS BY CATEGORY
+exports.getFoodTruckByCategory = async (req, res, next) => {
+  try {
+    const foodTruck = await Category.findByPk(+req.params.categoryID, {
+      attributes: ["id", "name"],
+      include: {
+        model: FoodTruck,
+        through: {
+          attributes: [],
+        },
+        attributes: ["id", "name"],
+      },
+    });
+    if (foodTruck) {
+      res.status(200).json(foodTruck);
+    } else {
+      next({
+        status: 404,
+        message: "Catergory Not Found",
       });
     }
   } catch (error) {
