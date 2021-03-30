@@ -15,6 +15,7 @@ const morgan = require("morgan");
 //IMPORT ROUTES
 const userRoutes = require("./routes/user");
 const foodTruckRoutes = require("./routes/foodtruck");
+const categoryRoutes = require("./routes/category");
 
 //MIDDLEWARE
 app.use(morgan("dev"));
@@ -26,7 +27,8 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 //ROUTES
 app.use(userRoutes);
-app.use("/foodtruck",foodTruckRoutes);
+app.use("/foodtruck", foodTruckRoutes);
+app.use("/category", categoryRoutes);
 
 //MEDIA ROUTE
 app.use("/media", express.static(path.join(__dirname, "media")));

@@ -3,14 +3,15 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-//IMPORT CONTROLLERS
+/*  IMPORT CONTROLLERS  */
 const {
   getFoodTruckList,
-  getFoodTruck,
+  getFoodTruckDetail,
   editFoodTruck,
+  getFoodTruckByCategory,
 } = require("../controllers/foodTruckController");
 
-//IMPORT VALIDATION RULES
+/*  IMPORT VALIDATION RULES  */
 const {
   foodTruckValidationRules,
 } = require("../middleware/validator/foodTruckValidator");
@@ -23,7 +24,10 @@ const { isFoodTruckUser } = require("../middleware/auth/isAuth");
 router.get("/", getFoodTruckList);
 
 //GET FOOD TRUCK DETAIL
-router.get("/:foodTruckID", getFoodTruck);
+router.get("/:foodTruckID", getFoodTruckDetail);
+
+//GET FOOD TRUCK LIST BY CATEGORY
+router.get("/category/:categoryID", getFoodTruckByCategory);
 
 /*-------Private Routes-------*/
 

@@ -57,6 +57,14 @@ db.FoodTruck.belongsToMany(db.User, {
   as: "Customers",
 });
 
+/*Category ---- Food Truck*/
+db.Category.belongsToMany(db.FoodTruck, {
+  through: "FoodTruckCategory",
+});
+db.FoodTruck.belongsToMany(db.Category, {
+  through: "FoodTruckCategory",
+});
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
