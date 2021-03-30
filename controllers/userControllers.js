@@ -1,4 +1,4 @@
-const { User, FoodTruck } = require("../db/models");
+const { User, FoodTruck, Category } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
@@ -45,11 +45,47 @@ exports.getLocation = async (req, res, next) => {
   }
 };
 
+//GET FOODTRUCK PARAMS
+exports.fetchFoodTruck = async (categoryID, next) => {
+  try {
+    const foundFoodTrcuk = await FoodTruck.findByPk(categoryID);
+    return foundFoodTrcuk;
+  } catch (error) {
+    next(error);
+  }
+};
+
 //USER FOLLOW TRUCK
 exports.follow = async (req, res, next) => {
   try {
-    await req.user.addFoodTruck(req.body.foodTruckID);
-    res.sendStatus(204);
+    const check = await req.user.hasFoodTruck(req.foodTruck.id);
+    if (!check) {
+      await req.user.addFoodTruck(req.foodTruck.id);
+      res.sendStatus(204);
+    } else {
+      next({
+        status: 404,
+        message: "Food Truck Already Followed",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+//USER UNFOLLOW TRUCK
+exports.unfollow = async (req, res, next) => {
+  try {
+    const check = await req.user.hasFoodTruck(req.foodTruck.id);
+    if (check) {
+      await req.user.removeFoodTruck(req.foodTruck.id);
+      res.sendStatus(204);
+    } else {
+      next({
+        status: 404,
+        message: "Food Truck Not Followed",
+      });
+    }
   } catch (error) {
     next(error);
   }

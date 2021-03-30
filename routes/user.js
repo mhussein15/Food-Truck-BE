@@ -1,4 +1,5 @@
 //IMPORT FILES
+const e = require("express");
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
@@ -9,8 +10,10 @@ const {
   signup,
   getLocation,
   follow,
+  unfollow,
   profile,
   profileEdit,
+  fetchFoodTruck,
 } = require("../controllers/userControllers");
 const { isUser } = require("../middleware/auth/isAuth");
 
@@ -44,12 +47,32 @@ router.put(
   getLocation
 );
 
+router.param("foodTruckID", async (req, res, next, foodTruckID) => {
+  const foodFound = await fetchFoodTruck(foodTruckID, next);
+  if (foodFound) {
+    req.foodTruck = foodFound;
+    next();
+  } else {
+    next({
+      status: 404,
+      message: "Food Truck Not Found",
+    });
+  }
+});
+
 //FOLLOW FOODTRUCK
 router.post(
-  "/follow",
+  "/follow/:foodTruckID",
   passport.authenticate("jwt", { session: false }),
   isUser,
   follow
+);
+//UNFOLLOW FOODTRUCK
+router.post(
+  "/unfollow/:foodTruckID",
+  passport.authenticate("jwt", { session: false }),
+  isUser,
+  unfollow
 );
 
 //CUSTOMER PROFILE
