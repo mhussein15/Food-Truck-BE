@@ -119,6 +119,8 @@ exports.profile = async (req, res, next) => {
 //USER EDIT PROFILE
 exports.profileEdit = async (req, res, next) => {
   try {
+    delete req.body.password;
+    delete req.body.username;
     const updatedUser = await req.user.update(req.body);
     res.status(200).json(updatedUser);
   } catch (error) {

@@ -9,6 +9,7 @@ const {
   getFoodTruckDetail,
   editFoodTruck,
   getFoodTruckByCategory,
+  getFoodTruckToUser,
 } = require("../controllers/foodTruckController");
 
 /*  IMPORT VALIDATION RULES  */
@@ -24,7 +25,7 @@ const { isFoodTruckUser } = require("../middleware/auth/isAuth");
 router.get("/", getFoodTruckList);
 
 //GET FOOD TRUCK DETAIL
-router.get("/:foodTruckID", getFoodTruckDetail);
+router.get("/detail/:foodTruckID", getFoodTruckDetail);
 
 //GET FOOD TRUCK LIST BY CATEGORY
 router.get("/category/:categoryID", getFoodTruckByCategory);
@@ -39,5 +40,13 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   isFoodTruckUser,
   editFoodTruck
+);
+
+//RETURN FOOD TRUCKS TO FOODTRUCK USER
+router.get(
+  "/user",
+  passport.authenticate("jwt", { session: false }),
+  isFoodTruckUser,
+  getFoodTruckToUser
 );
 module.exports = router;

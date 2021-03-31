@@ -85,3 +85,18 @@ exports.getFoodTruckByCategory = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getFoodTruckToUser = async (req, res, next) => {
+  try {
+    const foodTruck = await FoodTruck.findOne({
+      where:{
+        UserID:req.user.id
+      },
+      attributes: ["id","name"]
+    
+    });
+    res.status(200).json(foodTruck);
+  } catch (error) {
+    next(error);
+  }
+};
