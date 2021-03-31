@@ -34,9 +34,10 @@ exports.signin = (req, res) => {
 //GET USER LOCATION
 exports.getLocation = async (req, res, next) => {
   try {
+    console.log(req.body)
     const point = {
       type: "Point",
-      coordinates: [50.55629253387451, 26.224985917279337],
+      coordinates: [req.body.longitude, req.body.latitude],
     };
     await req.user.update({ location: point });
     res.sendStatus(204);
