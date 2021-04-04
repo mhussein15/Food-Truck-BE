@@ -1,4 +1,6 @@
 const { FoodTruck, Category } = require("../db/models");
+const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
+const jwt = require("jsonwebtoken");
 
 //GET FOOD TRUCK LIST
 exports.getFoodTruckList = async (req, res, next) => {
@@ -33,6 +35,17 @@ exports.getFoodTruckDetail = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+//FOOD TRUCK SIGNIN
+exports.signin = (req, res) => {
+  const { user } = req;
+  const payload = {
+    username: user.username,
+    exp: Date.now() + parseInt(JWT_EXPIRATION_MS),
+  };
+  const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
+  res.json({ token });
 };
 
 //EDIT FOOD TRUCK
@@ -89,11 +102,10 @@ exports.getFoodTruckByCategory = async (req, res, next) => {
 exports.getFoodTruckToUser = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findOne({
-      where:{
-        UserID:req.user.id
+      where: {
+        UserID: req.user.id,
       },
-      attributes: ["id","name"]
-    
+      attributes: ["id", "name"],
     });
     res.status(200).json(foodTruck);
   } catch (error) {

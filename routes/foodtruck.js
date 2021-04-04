@@ -10,11 +10,13 @@ const {
   editFoodTruck,
   getFoodTruckByCategory,
   getFoodTruckToUser,
+  signin,
 } = require("../controllers/foodTruckController");
 
 /*  IMPORT VALIDATION RULES  */
 const {
   foodTruckValidationRules,
+  foodTruckAuthValidationRules,
 } = require("../middleware/validator/foodTruckValidator");
 const { validate } = require("../middleware/validator/validate");
 const { isFoodTruckUser } = require("../middleware/auth/isAuth");
@@ -31,6 +33,16 @@ router.get("/detail/:foodTruckID", getFoodTruckDetail);
 router.get("/category/:categoryID", getFoodTruckByCategory);
 
 /*-------Private Routes-------*/
+
+//FOOD TRUCK SIGNIN
+router.post(
+  "/signin",
+  foodTruckAuthValidationRules(),
+  validate,
+  passport.authenticate("local", { session: false }),
+  isFoodTruckUser,
+  signin
+);
 
 //EDIT FOOD TRUCK
 router.put(

@@ -5,8 +5,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: {
         args: true,
-        msg: "Food Truck name already in use!"
+        msg: "Food Truck name already in use!",
       },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
   return FoodTruck;
