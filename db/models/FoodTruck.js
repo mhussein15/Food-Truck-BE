@@ -5,8 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: {
         args: true,
-        msg: "Food Truck name already in use!"
+        msg: "Food Truck name already in use!",
       },
+    },
+    location: {
+      type: DataTypes.GEOMETRY("POINT"),
     },
   });
   return FoodTruck;
