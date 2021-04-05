@@ -11,6 +11,7 @@ const {
   getFoodTruckByCategory,
   getFoodTruckToUser,
   getFoodTruckLocation,
+  getUserLocationHeatMap,
   signin,
 } = require("../controllers/foodTruckController");
 
@@ -70,4 +71,13 @@ router.put(
   isFoodTruckUser,
   getFoodTruckLocation
 );
+
+//GET USERS LOCATION FOR HEATMAP
+router.get(
+  "/heatmap/",
+  passport.authenticate("jwt", { session: false }),
+  isFoodTruckUser,
+  getUserLocationHeatMap
+);
+
 module.exports = router;
