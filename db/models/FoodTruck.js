@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     location: {
       type: DataTypes.GEOMETRY("POINT"),
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,

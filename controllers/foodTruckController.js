@@ -1,4 +1,4 @@
-const { FoodTruck, Category } = require("../db/models");
+const { FoodTruck, Category, User } = require("../db/models");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 const jwt = require("jsonwebtoken");
 
@@ -136,6 +136,21 @@ exports.getFoodTruckLocation = async (req, res, next) => {
         message: "Food Truck Not Found",
       });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUserLocationHeatMap = async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      raw:true,
+      where: {
+        role: "user",
+      },
+      attributes: ["location"],
+    });
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
