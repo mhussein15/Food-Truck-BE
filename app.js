@@ -21,10 +21,12 @@ const categoryRoutes = require("./routes/category");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
+
 //PASSPORT
 app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
+
 //ROUTES
 app.use(userRoutes);
 app.use("/foodtruck", foodTruckRoutes);
@@ -50,7 +52,8 @@ app.use((err, req, res, next) => {
 
 // start the server
 app.listen(8000);
+
 //DB settings
 db.sequelize.sync();
-db.sequelize.sync({ alter: true });
+// db.sequelize.sync({ alter: true });
 // db.sequelize.sync({ force: true });

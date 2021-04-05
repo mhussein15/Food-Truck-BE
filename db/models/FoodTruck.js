@@ -10,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     location: {
       type: DataTypes.GEOMETRY("POINT"),
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
   return FoodTruck;
