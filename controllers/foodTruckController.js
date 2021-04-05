@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 //GET FOOD TRUCK LIST
 exports.getFoodTruckList = async (req, res, next) => {
   try {
-    const foodTruck = await FoodTruck.findAll({
+    const foodTrucks = await FoodTruck.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt", "UserID"],
       },
     });
-    res.status(200).json(foodTruck);
+    res.status(200).json(foodTrucks);
   } catch (error) {
     next(error);
   }
@@ -76,7 +76,7 @@ exports.editFoodTruck = async (req, res, next) => {
 //GET FOOD TRUCKS BY CATEGORY
 exports.getFoodTruckByCategory = async (req, res, next) => {
   try {
-    const foodTruck = await Category.findByPk(+req.params.categoryID, {
+    const category = await Category.findByPk(+req.params.categoryID, {
       attributes: ["id", "name"],
       include: {
         model: FoodTruck,
@@ -86,8 +86,8 @@ exports.getFoodTruckByCategory = async (req, res, next) => {
         attributes: ["id", "name"],
       },
     });
-    if (foodTruck) {
-      res.status(200).json(foodTruck);
+    if (category) {
+      res.status(200).json(category);
     } else {
       next({
         status: 404,
@@ -99,6 +99,7 @@ exports.getFoodTruckByCategory = async (req, res, next) => {
   }
 };
 
+//RETURN FOOD TRUCK INFO TO FOOD TRUCK USER
 exports.getFoodTruckToUser = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findOne({
@@ -113,6 +114,7 @@ exports.getFoodTruckToUser = async (req, res, next) => {
   }
 };
 
+//GET FOODTRUCK LOCATION
 exports.getFoodTruckLocation = async (req, res, next) => {
   try {
     const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
@@ -141,10 +143,10 @@ exports.getFoodTruckLocation = async (req, res, next) => {
   }
 };
 
+//RETURN CUSTOMER LOCATION TO FOODTRUCK USER
 exports.getUserLocationHeatMap = async (req, res, next) => {
   try {
     const users = await User.findAll({
-      raw:true,
       where: {
         role: "user",
       },
