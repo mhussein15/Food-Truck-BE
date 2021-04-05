@@ -112,3 +112,31 @@ exports.getFoodTruckToUser = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getFoodTruckLocation = async (req, res, next) => {
+  try {
+    const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
+    if (foodTruck) {
+      if (foodTruck.UserID === req.user.id) {
+        const point = {
+          type: "Point",
+          coordinates: [req.body.longitude, req.body.latitude],
+        };
+        await foodTruck.update({ location: point });
+        res.sendStatus(204);
+      } else {
+        next({
+          status: 403,
+          message: "Forbidden",
+        });
+      }
+    } else {
+      next({
+        status: 404,
+        message: "Food Truck Not Found",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

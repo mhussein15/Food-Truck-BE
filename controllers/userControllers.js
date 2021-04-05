@@ -34,7 +34,6 @@ exports.signin = (req, res) => {
 //GET USER LOCATION
 exports.getLocation = async (req, res, next) => {
   try {
-    console.log(req.body)
     const point = {
       type: "Point",
       coordinates: [req.body.longitude, req.body.latitude],

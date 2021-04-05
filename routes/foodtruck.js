@@ -10,6 +10,7 @@ const {
   editFoodTruck,
   getFoodTruckByCategory,
   getFoodTruckToUser,
+  getFoodTruckLocation,
   signin,
 } = require("../controllers/foodTruckController");
 
@@ -60,5 +61,13 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   isFoodTruckUser,
   getFoodTruckToUser
+);
+
+//GET FOOD TRUCK LOCATION
+router.put(
+  "/location/:foodTruckID",
+  passport.authenticate("jwt", { session: false }),
+  isFoodTruckUser,
+  getFoodTruckLocation
 );
 module.exports = router;

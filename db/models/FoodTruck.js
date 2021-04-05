@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         msg: "Food Truck name already in use!",
       },
     },
+    location: {
+      type: DataTypes.GEOMETRY("POINT"),
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
