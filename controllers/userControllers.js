@@ -107,7 +107,7 @@ exports.profile = async (req, res, next) => {
         through: {
           attributes: [],
         },
-        attributes: ["id", "name"],
+        attributes: ["id", "name","location"],
       },
     });
     res.status(200).json(user);
