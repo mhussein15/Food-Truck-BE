@@ -65,6 +65,18 @@ db.FoodTruck.belongsToMany(db.Category, {
   through: "FoodTruckCategory",
 });
 
+/*FoodTruck ---- Food Category*/
+db.FoodTruck.hasMany(db.FoodCategory, { onDelete: "cascade" });
+db.FoodCategory.belongsTo(db.FoodTruck);
+
+/*FoodCategory ---- FoodItem*/
+db.FoodCategory.hasMany(db.FoodItem, { onDelete: "cascade" });
+db.FoodItem.belongsTo(db.FoodCategory);
+
+/*FoodTruck ---- WorkingHours*/
+db.FoodTruck.hasMany(db.WorkingHours, { onDelete: "cascade" });
+db.WorkingHours.belongsTo(db.FoodTruck);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -1,4 +1,4 @@
-const { FoodTruck, Category, User } = require("../db/models");
+const { FoodTruck, Category, User, FoodCategory } = require("../db/models");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 const jwt = require("jsonwebtoken");
 
@@ -46,31 +46,6 @@ exports.signin = (req, res) => {
   };
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
   res.json({ token });
-};
-
-//EDIT FOOD TRUCK
-exports.editFoodTruck = async (req, res, next) => {
-  try {
-    const foodTruck = await FoodTruck.findByPk(+req.params.foodTruckID);
-    if (foodTruck) {
-      if (foodTruck.UserID === req.user.id) {
-        await foodTruck.update(req.body);
-        res.sendStatus(204);
-      } else {
-        next({
-          status: 403,
-          message: "Forbidden",
-        });
-      }
-    } else {
-      next({
-        status: 404,
-        message: "Food Truck Not Found",
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
 };
 
 //GET FOOD TRUCKS BY CATEGORY

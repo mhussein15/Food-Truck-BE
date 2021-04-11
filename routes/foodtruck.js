@@ -7,7 +7,6 @@ const passport = require("passport");
 const {
   getFoodTruckList,
   getFoodTruckDetail,
-  editFoodTruck,
   getFoodTruckByCategory,
   getFoodTruckToUser,
   getFoodTruckLocation,
@@ -22,6 +21,10 @@ const {
 } = require("../middleware/validator/foodTruckValidator");
 const { validate } = require("../middleware/validator/validate");
 const { isFoodTruckUser } = require("../middleware/auth/isAuth");
+
+/*  IMPORT ROUTES  */
+const menuRoutes = require("../routes/subroutes/menu");
+const workingHoursRoutes = require("../routes/subroutes/workingHours");
 
 /*-------Public Routes-------*/
 
@@ -44,16 +47,6 @@ router.post(
   passport.authenticate("local", { session: false }),
   isFoodTruckUser,
   signin
-);
-
-//EDIT FOOD TRUCK
-router.put(
-  "/:foodTruckID",
-  foodTruckValidationRules(),
-  validate,
-  passport.authenticate("jwt", { session: false }),
-  isFoodTruckUser,
-  editFoodTruck
 );
 
 //RETURN FOOD TRUCKS TO FOODTRUCK USER
@@ -79,5 +72,13 @@ router.get(
   isFoodTruckUser,
   getUserLocationHeatMap
 );
+
+/*-----MENU-----*/
+
+router.use("/menu", menuRoutes);
+
+/*-----Working Hours-----*/
+
+router.use("/workinghours", workingHoursRoutes);
 
 module.exports = router;
