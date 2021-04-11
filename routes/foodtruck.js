@@ -25,6 +25,7 @@ const { isFoodTruckUser } = require("../middleware/auth/isAuth");
 /*  IMPORT ROUTES  */
 const menuRoutes = require("../routes/subroutes/menu");
 const workingHoursRoutes = require("../routes/subroutes/workingHours");
+const { getMenuPublic } = require("../controllers/footCategoryController");
 
 /*-------Public Routes-------*/
 
@@ -74,6 +75,8 @@ router.get(
 );
 
 /*-----MENU-----*/
+
+router.get("/:foodTruckID/menu", getMenuPublic);
 
 router.use("/menu", menuRoutes);
 

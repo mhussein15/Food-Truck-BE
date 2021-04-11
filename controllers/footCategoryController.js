@@ -45,7 +45,7 @@ exports.getMenuPublic = async (req, res, next) => {
           attributes: ["id", "name", "price"],
         },
       },
-      attributes: ["id", "name"],
+      attributes: [],
     });
     if (foodTruck) {
       res.status(200).json(foodTruck);

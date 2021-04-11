@@ -18,9 +18,7 @@ const { validate } = require("../../middleware/validator/validate");
 const foodItemRoutes = require("../subroutes/fooditem");
 /*-----MENU-----*/
 
-/*-----PUBLIC ROUTES-----*/
 
-router.get("/:foodTruckID", getMenuPublic);
 /*-----PRIVATE ROUTES-----*/
 
 router.get(
