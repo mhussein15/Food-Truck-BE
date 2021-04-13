@@ -14,7 +14,6 @@ exports.createFoodItem = async (req, res, next) => {
     if (req.file) {
       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
     }
-    console.log(req.body);
     const foodTruckID = await req.user.getFoodTruck();
     if (foodTruckID.id === req.foodCategory.FoodTruckId) {
       const foodItem = await FoodItem.create(req.body);
@@ -40,8 +39,8 @@ exports.editFoodItem = async (req, res, next) => {
     if (foodTruckID.id === req.foodCategory.FoodTruckId) {
       const foodItem = await FoodItem.findByPk(+req.params.foodItemID);
       if (foodItem) {
-        await foodItem.update(req.body);
-        res.status(200).json(foodItem);
+        const updatedFoodItem = await foodItem.update(req.body);
+        res.status(200).json(updatedFoodItem);
       } else {
         next({
           status: 404,
