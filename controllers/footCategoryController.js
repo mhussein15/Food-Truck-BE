@@ -42,7 +42,7 @@ exports.getMenuPublic = async (req, res, next) => {
         attributes: ["id", "name"],
         include: {
           model: FoodItem,
-          attributes: ["id", "name", "price"],
+          attributes: ["id", "name", "price", "image"],
         },
       },
       attributes: [],
