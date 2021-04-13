@@ -58,7 +58,7 @@ exports.getFoodTruckByCategory = async (req, res, next) => {
         through: {
           attributes: [],
         },
-        attributes: ["id", "name", "image"],
+        attributes: ["id", "name", "image", "location"],
       },
     });
     if (category) {
