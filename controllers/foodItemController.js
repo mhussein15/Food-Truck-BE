@@ -11,6 +11,10 @@ exports.fetchFoodItem = async (foodCategoryID, next, req) => {
 
 exports.createFoodItem = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    }
+    console.log(req.body);
     const foodTruckID = await req.user.getFoodTruck();
     if (foodTruckID.id === req.foodCategory.FoodTruckId) {
       const foodItem = await FoodItem.create(req.body);
@@ -29,6 +33,9 @@ exports.createFoodItem = async (req, res, next) => {
 
 exports.editFoodItem = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    }
     const foodTruckID = await req.user.getFoodTruck();
     if (foodTruckID.id === req.foodCategory.FoodTruckId) {
       const foodItem = await FoodItem.findByPk(+req.params.foodItemID);

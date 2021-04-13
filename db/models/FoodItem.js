@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    image: {
+      type: DataTypes.STRING,
+    },
   });
   return FoodItem;
 };
